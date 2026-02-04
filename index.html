@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>Riwaq Digital</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#020617;
+  color:#fff;
+  direction:rtl;
+}
+header{
+  text-align:center;
+  padding:40px 20px;
+}
+h1{color:#22c55e}
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+.product{
+  background:#0f172a;
+  padding:20px;
+  border-radius:16px;
+  margin-bottom:20px;
+}
+button{
+  background:#22c55e;
+  border:none;
+  padding:12px 22px;
+  border-radius:12px;
+  cursor:pointer;
+  font-size:16px;
+}
+
+/* نافذة الدفع */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.75);
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+.box{
+  background:#020617;
+  padding:25px;
+  border-radius:18px;
+  max-width:420px;
+  width:90%;
+  text-align:center;
+}
+.wallet{
+  background:#0f172a;
+  padding:10px;
+  border-radius:10px;
+  word-break:break-all;
+  margin:10px 0;
+}
+.copy{
+  background:#0ea5e9;
+  border:none;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+}
+.confirm{
+  background:#22c55e;
+  border:none;
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  margin-top:15px;
+}
+.close{
+  background:none;
+  border:none;
+  color:#94a3b8;
+  margin-top:10px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Riwaq Digital</h1>
+  <p>متجر كتب رقمية – تسليم فوري</p>
+</header>
+
+<div class="container">
+
+  <!-- منتج -->
+  <div class="product">
+    <h2>📘 كتاب التداول الاحترافي</h2>
+    <p>السعر: 5 USDT</p>
+    <button onclick="openPayment('book.pdf',5)">شراء الآن</button>
+  </div>
+
+</div>
+
+<!-- نافذة الدفع -->
+<div id="paymentModal" class="modal">
+  <div class="box">
+    <h3>💳 الدفع</h3>
+    <p>المبلغ: <b id="price"></b></p>
+    <p>USDT (TRC20)</p>
+
+    <div class="wallet" id="wallet"></div>
+    <button class="copy" onclick="copyWallet()">📋 نسخ العنوان</button>
+
+    <button class="confirm" onclick="confirmPayment()">تم الدفع</button>
+    <button class="close" onclick="closePayment()">إغلاق</button>
+  </div>
+</div>
+
+<script>
+/* 🔴 ضع عنوانك هنا */
+const WALLET_ADDRESS = "PUT_YOUR_USDT_TRC20_ADDRESS";
+
+let selectedFile = "";
+let selectedPrice = 0;
+
+function openPayment(file, price){
+  selectedFile = file;
+  selectedPrice = price;
+  document.getElementById("price").innerText = price + " USDT";
+  document.getElementById("wallet").innerText = WALLET_ADDRESS;
+  document.getElementById("paymentModal").style.display = "flex";
+}
+
+function closePayment(){
+  document.getElementById("paymentModal").style.display = "none";
+}
+
+function copyWallet(){
+  navigator.clipboard.writeText(WALLET_ADDRESS);
+  alert("تم نسخ عنوان الدفع");
+}
+
+function confirmPayment(){
+  const token = Math.random().toString(36).substring(2);
+  localStorage.setItem("token", token);
+  localStorage.setItem("file", selectedFile);
+  location.href = "receipt.html?token=" + token;
+}
+</script>
+
+</body>
+</html>
